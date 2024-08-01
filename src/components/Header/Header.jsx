@@ -1,6 +1,17 @@
 import './styles.css';
 const Header = () => {
-  return <div className="navbar">Header</div>;
+  const logoutHandler = () => {
+    alert('logout');
+  };
+
+  return (
+    <div className="navbar">
+      <p className="logo">Financial Tracker.</p>
+      <button className="logo logout-btn" onClick={logoutHandler}>
+        Logout
+      </button>
+    </div>
+  );
 };
 
 export default Header;
