@@ -22,3 +22,15 @@
 .bottom-text {
   font-size: 0.8rem;
 }
+
+.btn-switch {
+  border: none;
+  background-color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.btn-switch:hover {
+  color: var(--theme);
+  transition: all 0.3s;
+}
