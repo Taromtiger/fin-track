@@ -7,6 +7,7 @@ import { isEmailValid, isPasswordValid } from '../../utils/validator';
 import { toast } from 'react-toastify';
 
 import { handleLoginWithEmailAndPassword } from '../../firebase/loginWithEmailAndPassword';
+import { signupWithGoogle } from '../../firebase/signupWithGoogle';
 
 const LoginWithEmail = () => {
   const [email, setEmail] = useState('');
@@ -32,11 +33,6 @@ const LoginWithEmail = () => {
       setIsLoading,
       navigate
     );
-  };
-
-  const signupWithGoogle = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
   };
 
   return (
@@ -73,7 +69,7 @@ const LoginWithEmail = () => {
           <Button
             text={isLoading ? 'Log in...' : 'Log in with Google'}
             blue={true}
-            onClick={signupWithGoogle}
+            onClick={() => signupWithGoogle(navigate, setIsLoading)}
             disabled={isLoading}
           />
         </div>
