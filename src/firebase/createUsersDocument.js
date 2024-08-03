@@ -3,8 +3,6 @@ import { db } from '../firebase';
 import { toast } from 'react-toastify';
 
 const createDoc = async (user, setIsLoading, name) => {
-  console.log(user);
-
   if (!user) return;
 
   const useRef = doc(db, 'users', user.uid);
@@ -25,12 +23,8 @@ const createDoc = async (user, setIsLoading, name) => {
       setIsLoading(false);
     }
   } else {
-    toast.error('Document already exists');
     setIsLoading(false);
   }
 };
 
 export { createDoc };
-
-// Make sure that the doc with the uid doesn't exist
-// Create a doc

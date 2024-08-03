@@ -9,9 +9,7 @@ export const handleLoginWithEmailAndPassword = async (
   navigate
 ) => {
   await signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in
-      const user = userCredential.user;
+    .then(() => {
       toast.success('User successfully logged in');
       setIsLoading(false);
       navigate('/dashboard');

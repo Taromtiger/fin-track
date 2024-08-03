@@ -7,6 +7,7 @@ import { isEmailValid, isPasswordValid } from '../../utils/validator';
 import { toast } from 'react-toastify';
 
 import { handleCreateNewUser } from '../../firebase/createUserWithEmailAndPassword';
+import { signupWithGoogle } from '../../firebase/signupWithGoogle';
 
 const SignupWithEmail = () => {
   const [name, setName] = useState('');
@@ -35,15 +36,9 @@ const SignupWithEmail = () => {
       setIsLoading(false);
       return;
     }
-
     // Authenticate new usser, or basically create a new account using email and password
 
     await handleCreateNewUser(email, password, setIsLoading, navigate, name);
-  };
-
-  const signupWithGoogle = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
   };
 
   return (
@@ -97,7 +92,7 @@ const SignupWithEmail = () => {
           <Button
             text={isLoading ? 'Sign up...' : 'Sign Up with Google'}
             blue={true}
-            onClick={signupWithGoogle}
+            onClick={() => signupWithGoogle(navigate, setIsLoading)}
             disabled={isLoading}
           />
         </div>

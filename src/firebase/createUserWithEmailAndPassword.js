@@ -13,7 +13,6 @@ export const handleCreateNewUser = async (
   await createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
-      console.log('User =>', user);
       toast.success('User created!');
       setIsLoading(false);
 
