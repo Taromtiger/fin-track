@@ -7,20 +7,8 @@
   padding: 1rem 1.5rem;
 }
 
-.title {
-  font-weight: 500;
-  font-size: 1.2rem;
-  text-align: center;
-  margin: 0;
-  margin-bottom: 1rem;
-}
-
-.bottom-wrapper {
-  text-align: center;
-}
-
 .bottom-text {
-  font-size: 0.8rem;
+  text-align: center;
 }
 
 .btn-switch {
