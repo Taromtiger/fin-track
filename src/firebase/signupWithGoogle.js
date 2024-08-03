@@ -11,7 +11,7 @@ export const signupWithGoogle = async (navigate, setIsLoading) => {
         const user = result.user;
         createDoc(user, setIsLoading);
         setIsLoading(false);
-        toast.success('User successfully logged in');
+        // toast.success('User successfully logged in');
         navigate('/dashboard');
       })
       .catch((error) => {

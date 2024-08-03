@@ -1,11 +1,14 @@
+import Cards from '../components/Cards/Cards.jsx';
 import Header from '../components/Header/Header';
 
 const DashBoard = () => {
   return (
-    <div>
+    <>
       <Header />
-      DashBoard Page
-    </div>
+      <div className="container">
+        <Cards />
+      </div>
+    </>
   );
 };
 

@@ -10,7 +10,7 @@ export const handleLoginWithEmailAndPassword = async (
 ) => {
   await signInWithEmailAndPassword(auth, email, password)
     .then(() => {
-      toast.success('User successfully logged in');
+      // toast.success('User successfully logged in');
       setIsLoading(false);
       navigate('/dashboard');
 

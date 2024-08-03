@@ -35,6 +35,7 @@ const Header = () => {
       <p className="logo">Financial Tracker.</p>
       {user && (
         <button className="logo logout-btn" onClick={logoutHandler}>
+          <img src={user.photoURL} alt="user logo" className="user-logo" />{' '}
           Logout
         </button>
       )}
