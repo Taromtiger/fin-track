@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import CustomInput from '../Input/CustomInput';
-
 import './styles.css';
 import Button from '../Button/Button';
 import { isEmailValid, isPasswordValid } from '../../utils/validator';
 import { toast } from 'react-toastify';
-import { auth } from '../../firebase';
+
+import { handleCreateNewUser } from '../../firebase/createUserWithEmailAndPassword';
 
 const SignupWithEmail = () => {
   const [name, setName] = useState('');
@@ -17,7 +16,7 @@ const SignupWithEmail = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const signupWithEmail = (e) => {
+  const signupWithEmail = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -39,32 +38,7 @@ const SignupWithEmail = () => {
 
     // Authenticate new usser, or basically create a new account using email and password
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log('User =>', user);
-        toast.success('User created!');
-        setIsLoading(false);
-        // setName('');
-        // setEmail('');
-        // setPassword('');
-        // setConfirmPassword('');
-        createDoc(user);
-        navigate('/dashboard');
-
-        // Create a document with user id as the following id
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        toast.error(errorMessage);
-        setIsLoading(false);
-      });
-  };
-
-  const createDoc = (user) => {
-    // Make sure that the doc with the uid doesn't exist
-    // Create a doc
+    await handleCreateNewUser(email, password, setIsLoading, navigate, name);
   };
 
   const signupWithGoogle = (e) => {

@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import CustomInput from '../Input/CustomInput';
-
 import './styles.css';
 import Button from '../Button/Button';
 import { isEmailValid, isPasswordValid } from '../../utils/validator';
 import { toast } from 'react-toastify';
-import { auth } from '../../firebase';
+
+import { handleLoginWithEmailAndPassword } from '../../firebase/loginWithEmailAndPassword';
 
 const LoginWithEmail = () => {
   const [email, setEmail] = useState('');
@@ -15,9 +14,8 @@ const LoginWithEmail = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const loginUsingEmail = (e) => {
+  const loginUsingEmail = async (e) => {
     e.preventDefault();
-
     setIsLoading(true);
 
     if (!isEmailValid(email)) {
@@ -28,26 +26,12 @@ const LoginWithEmail = () => {
       toast.error('Invalid password', {});
     }
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        toast.success('User successfully logged in');
-        setIsLoading(false);
-        navigate('/dashboard');
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        toast.error(errorMessage);
-        setIsLoading(false);
-      });
-  };
-
-  const createDoc = (user) => {
-    // Make sure that the doc with the uid doesn't exist
-    // Create a doc
+    await handleLoginWithEmailAndPassword(
+      email,
+      password,
+      setIsLoading,
+      navigate
+    );
   };
 
   const signupWithGoogle = (e) => {
@@ -60,7 +44,6 @@ const LoginWithEmail = () => {
       <h2 className="title">
         Login on <span style={{ color: 'var(--theme)' }}>FinTrack.</span>
       </h2>
-
       <form>
         <CustomInput
           label={'email'}
