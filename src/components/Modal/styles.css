@@ -58,3 +58,7 @@
   margin-bottom: 1rem;
   font-family: inherit;
 }
+
+.modal-window button {
+  max-width: 30%;
+}

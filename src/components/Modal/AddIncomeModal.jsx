@@ -5,6 +5,10 @@ import DatePicker from 'react-datepicker';
 import Button from '../Button/Button';
 import './styles.css';
 import { toast } from 'react-toastify';
+import { addTransactionToDb } from '../../firebase/addTransactionToDb';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../../firebase';
+import moment from 'moment';
 
 const AddIncomeModal = ({ visible, title, cancelHandler }) => {
   const {
@@ -14,12 +18,21 @@ const AddIncomeModal = ({ visible, title, cancelHandler }) => {
     reset,
     formState: { errors },
   } = useForm();
+  const [user] = useAuthState(auth);
 
   const onSubmit = (data) => {
     console.log(data);
+    const newTrasaction = {
+      incomeName: data.incomeName,
+      incomeAmount: data.incomeAmount,
+      incomeDate: moment(data.dateInput).format('L'),
+      incomeTag: data.incomeTag,
+    };
     toast.success('Income successfully added');
     reset();
     cancelHandler();
+
+    addTransactionToDb(user, newTrasaction);
   };
 
   return (
@@ -39,8 +52,8 @@ const AddIncomeModal = ({ visible, title, cancelHandler }) => {
           {...register('incomeName', {
             required: 'Please input name of transaction',
             minLength: {
-              value: 5,
-              message: 'Minimum length 5 letters',
+              value: 3,
+              message: 'Minimum length 3 letters',
             },
           })}
           className="modal-input"

@@ -5,6 +5,11 @@ import DatePicker from 'react-datepicker';
 import Button from '../Button/Button';
 import './styles.css';
 import { toast } from 'react-toastify';
+import moment from 'moment';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../../firebase';
+import { addTransactionToDb } from '../../firebase/addTransactionToDb';
+
 const AddExpenseModal = ({ visible, title, cancelHandler }) => {
   const {
     control,
@@ -13,12 +18,22 @@ const AddExpenseModal = ({ visible, title, cancelHandler }) => {
     reset,
     formState: { errors },
   } = useForm();
+  const [user] = useAuthState(auth);
 
   const onSubmit = (data) => {
     console.log(data);
+    const newTrasaction = {
+      expenseName: data.expenseName,
+      expenseAmount: data.expenseAmount,
+      expenseDate: moment(data.dateInput).format('L'),
+      expenseTag: data.expenseTag,
+    };
+
     toast.success('Expense successfully added');
     reset();
     cancelHandler();
+
+    addTransactionToDb(user, newTrasaction);
   };
 
   return (
@@ -38,8 +53,8 @@ const AddExpenseModal = ({ visible, title, cancelHandler }) => {
           {...register('expenseName', {
             required: 'Please input name of transaction',
             minLength: {
-              value: 5,
-              message: 'Minimum length 5 letters',
+              value: 3,
+              message: 'Minimum length 3 letters',
             },
           })}
           className="modal-input"
@@ -82,7 +97,7 @@ const AddExpenseModal = ({ visible, title, cancelHandler }) => {
         </label>
         <select
           id="tag"
-          {...register('incomeTag', { required: true })}
+          {...register('expenseTag', { required: true })}
           className="modal-select"
         >
           <option value="salary">Salary</option>
@@ -90,7 +105,12 @@ const AddExpenseModal = ({ visible, title, cancelHandler }) => {
           <option value="investment">Investment</option>
         </select>
 
-        <Button type="submit" text={'Add Income'} blue={true} />
+        <Button
+          type="submit"
+          text={'Add Income'}
+          blue={true}
+          className="modal-btn"
+        />
       </form>
     </Modal>
   );
