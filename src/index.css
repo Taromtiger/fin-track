@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-
+@import 'react-datepicker/dist/react-datepicker.css';
 :root {
   --theme: #2970ff;
   --black: #000;
@@ -21,6 +21,15 @@ button {
   font-family: inherit;
 }
 
+.icon::before {
+  display: inline-block;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
 .container {
+  /* max-width: 1500px; */
+  /* width: 100%;
+  margin: 0 auto;*/
   padding: 0 1.5rem;
 }

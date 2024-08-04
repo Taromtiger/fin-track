@@ -1,0 +1,60 @@
+.ant-modal .ant-modal-title {
+  margin-bottom: 2rem;
+}
+
+.modal-window {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-input-label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.modal-input-label span {
+  color: red;
+}
+
+.modal-input {
+  padding: 0.3rem 0;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid lightgray;
+  margin-bottom: 1rem;
+}
+
+.modal-input::-webkit-outer-spin-button,
+.modal-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-error {
+  margin: 0;
+  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+  color: red;
+}
+
+.modal-date {
+  width: 100%;
+  padding: 0.3rem 0;
+  border: none;
+  border-bottom: 1px solid lightgray;
+  outline: none;
+  margin-bottom: 1rem;
+}
+
+.modal-select {
+  border: none;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid lightgray;
+  outline: none;
+  margin-bottom: 1rem;
+  font-family: inherit;
+}

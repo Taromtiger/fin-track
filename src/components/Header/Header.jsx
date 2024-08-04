@@ -6,7 +6,7 @@ import { auth } from '../../firebase';
 
 import './styles.css';
 const Header = () => {
-  const [user, loading] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const navigate = useNavigate();
 
   useEffect(() => {
