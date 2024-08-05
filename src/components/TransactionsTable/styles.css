@@ -1,17 +1,54 @@
 .filter-box {
   display: flex;
+  justify-content: space-between;
   margin-bottom: 1rem;
 }
 
+.ant-input {
+  font-family: inherit;
+}
+
+.ant-select {
+  font-family: inherit;
+}
+
 .filter-input {
-  max-width: 70%;
+  max-width: 77%;
   width: 100%;
   margin-right: 2rem;
   box-shadow: var(--shadow);
 }
 
-.select-input {
-  max-width: 27%;
+.select-tag {
+  max-width: 16%;
+  width: 100%;
+  margin-right: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.select-sort {
+  max-width: 21%;
   width: 100%;
   box-shadow: var(--shadow);
+}
+
+.ant-radio-group,
+.ant-radio-button-wrapper {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.ant-radio-button-wrapper {
+  text-wrap: nowrap;
+}
+
+.ant-table {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.ant-table-thead > tr > th {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.ant-table-tbody > tr > td {
+  font-family: 'Montserrat', sans-serif;
 }

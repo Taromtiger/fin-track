@@ -5,7 +5,8 @@ import './styles.css';
 
 const TransactionsTable = ({ transactions }) => {
   const [search, setSearch] = useState('');
-  const [selectType, setSelectType] = useState('');
+  const [typeValue, setTypeValue] = useState('');
+  const [sortValue, setSortValue] = useState('');
   const { Option } = Select;
 
   const columns = [
@@ -39,8 +40,20 @@ const TransactionsTable = ({ transactions }) => {
   const filteredTransactions = transactions.filter(
     (transaction) =>
       transaction.name.toLowerCase().includes(search.toLocaleLowerCase()) &&
-      transaction.type.includes(selectType)
+      transaction.type.includes(typeValue)
   );
+
+  const sortedTransactions = [...filteredTransactions].sort((a, b) => {
+    if (sortValue === 'dateAsc') {
+      return new Date(a.date) - new Date(b.date);
+    } else if (sortValue === 'dateDesc') {
+      return new Date(b.date) - new Date(a.date);
+    } else if (sortValue === 'amountAsc') {
+      return a.amount - b.amount;
+    } else if (sortValue === 'amountDesc') {
+      return b.amount - a.amount;
+    }
+  });
 
   return (
     <>
@@ -53,23 +66,31 @@ const TransactionsTable = ({ transactions }) => {
           className="filter-input"
         />
         <Select
-          className="select-input"
-          value={selectType}
-          onChange={(value) => setSelectType(value)}
-          allowClear
+          className="select-tag"
+          value={typeValue}
+          onChange={(value) => setTypeValue(value)}
           placeholder="Filter"
         >
           <Option value="">All</Option>
           <Option value="income">Income</Option>
           <Option value="expense">Expense</Option>
         </Select>
+
+        <Select
+          className="select-sort"
+          value={sortValue}
+          onChange={(value) => setSortValue(value)}
+          placeholder="Filter"
+        >
+          <Option value="">No Sort</Option>
+          <Option value="dateAsc">By Date (Asc)</Option>
+          <Option value="dateDesc">By Date (Desc)</Option>
+          <Option value="amountAsc">By Amount (Asc)</Option>
+          <Option value="amountDesc">By Amount (Desc)</Option>
+        </Select>
       </div>
 
-      <Table
-        dataSource={filteredTransactions}
-        columns={columns}
-        rowKey={`id`}
-      />
+      <Table dataSource={sortedTransactions} columns={columns} rowKey="id" />
     </>
   );
 };

@@ -19,7 +19,6 @@ const DashBoard = () => {
   const [currentBalance, setCurrentBalance] = useState(0);
   const [totalIncomes, setTotalIncomes] = useState(0);
   const [totalExpenses, setTotalExpenses] = useState(0);
-  console.log(transactions);
 
   const showIncomeModal = () => {
     setIsIncomeModalVisible(true);
