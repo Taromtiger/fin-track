@@ -1,0 +1,17 @@
+.filter-box {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.filter-input {
+  max-width: 70%;
+  width: 100%;
+  margin-right: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.select-input {
+  max-width: 27%;
+  width: 100%;
+  box-shadow: var(--shadow);
+}
