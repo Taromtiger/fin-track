@@ -28,8 +28,16 @@ button {
 }
 
 .container {
-  /* max-width: 1500px; */
-  /* width: 100%;
-  margin: 0 auto;*/
   padding: 0 1.5rem;
+}
+
+.spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5rem 0;
+}
+
+.spinner p {
+  color: var(--theme);
 }

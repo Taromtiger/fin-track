@@ -17,7 +17,7 @@ const SignupWithEmail = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const signupWithEmail = async (e) => {
+  const signupWithEmail = (e) => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -38,7 +38,7 @@ const SignupWithEmail = () => {
     }
     // Authenticate new usser, or basically create a new account using email and password
 
-    await handleCreateNewUser(email, password, setIsLoading, navigate, name);
+    handleCreateNewUser(email, password, setIsLoading, navigate, name);
   };
 
   return (

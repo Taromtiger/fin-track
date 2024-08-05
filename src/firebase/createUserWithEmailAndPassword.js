@@ -3,14 +3,14 @@ import { toast } from 'react-toastify';
 import { auth } from '../firebase';
 import { createDoc } from './createUsersDocument';
 
-export const handleCreateNewUser = async (
+export const handleCreateNewUser = (
   email,
   password,
   setIsLoading,
   navigate,
   name
 ) => {
-  await createUserWithEmailAndPassword(auth, email, password)
+  createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
       toast.success('User created!');

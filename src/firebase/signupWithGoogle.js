@@ -1,12 +1,12 @@
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../firebase';
 import { toast } from 'react-toastify';
 import { createDoc } from './createUsersDocument';
 
-export const signupWithGoogle = async (navigate, setIsLoading) => {
+export const signupWithGoogle = (navigate, setIsLoading) => {
   setIsLoading(true);
   try {
-    await signInWithPopup(auth, provider)
+    signInWithPopup(auth, provider)
       .then((result) => {
         const user = result.user;
         createDoc(user, setIsLoading);

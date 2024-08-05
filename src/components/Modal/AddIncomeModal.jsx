@@ -9,6 +9,7 @@ import { addTransactionToDb } from '../../firebase/addTransactionToDb';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
 import moment from 'moment';
+import { v4 as uuidv4 } from 'uuid';
 
 const AddIncomeModal = ({ visible, title, cancelHandler }) => {
   const {
@@ -21,18 +22,19 @@ const AddIncomeModal = ({ visible, title, cancelHandler }) => {
   const [user] = useAuthState(auth);
 
   const onSubmit = (data) => {
-    console.log(data);
-    const newTrasaction = {
-      incomeName: data.incomeName,
-      incomeAmount: data.incomeAmount,
-      incomeDate: moment(data.dateInput).format('L'),
-      incomeTag: data.incomeTag,
+    const newTransaction = {
+      type: 'income',
+      name: data.name,
+      amount: data.amount,
+      date: moment(data.dateInput).format('L'),
+      tag: data.tag,
+      id: uuidv4(),
     };
     toast.success('Income successfully added');
     reset();
     cancelHandler();
 
-    addTransactionToDb(user, newTrasaction);
+    addTransactionToDb(user, newTransaction);
   };
 
   return (
@@ -44,12 +46,12 @@ const AddIncomeModal = ({ visible, title, cancelHandler }) => {
       className="modal-window"
     >
       <form onSubmit={handleSubmit(onSubmit)} className="form">
-        <label htmlFor="incomeName" className="modal-input-label">
+        <label htmlFor="name" className="modal-input-label">
           <span>*</span> Income Name
         </label>
         <input
-          id="incomeName"
-          {...register('incomeName', {
+          id="name"
+          {...register('name', {
             required: 'Please input name of transaction',
             minLength: {
               value: 3,
@@ -58,20 +60,20 @@ const AddIncomeModal = ({ visible, title, cancelHandler }) => {
           })}
           className="modal-input"
         />
-        <p className="input-error">{errors?.incomeName?.message}</p>
+        <p className="input-error">{errors?.name?.message}</p>
 
-        <label htmlFor="incomeAmount" className="modal-input-label">
+        <label htmlFor="amount" className="modal-input-label">
           <span>*</span> Amount
         </label>
         <input
-          id="incomeAmount"
-          {...register('incomeAmount', {
+          id="amount"
+          {...register('amount', {
             required: 'Please input an amount',
           })}
           className="modal-input"
           type="number"
         />
-        <p className="input-error">{errors?.incomeAmount?.message}</p>
+        <p className="input-error">{errors?.amount?.message}</p>
 
         <label htmlFor="date" className="modal-input-label">
           <span>*</span> Date
@@ -96,7 +98,7 @@ const AddIncomeModal = ({ visible, title, cancelHandler }) => {
         </label>
         <select
           id="tag"
-          {...register('incomeTag', { required: true })}
+          {...register('tag', { required: true })}
           className="modal-select"
         >
           <option value="salary">Salary</option>

@@ -5,8 +5,8 @@ import Button from '../Button/Button';
 import PropTypes from 'prop-types';
 
 const CardComponent = ({
-  totalBalance,
-  totalIncome,
+  currentBalance,
+  totalIncomes,
   totalExpenses,
   showIncomeModal,
   showExpenseModa,
@@ -15,13 +15,13 @@ const CardComponent = ({
     <div className="card-container">
       <Card className="card">
         <h2>Current Ballance</h2>
-        <p>$ {totalBalance}</p>
+        <p>$ {currentBalance}</p>
         <Button text={'Reset Ballance'} blue={true} />
       </Card>
 
       <Card className="card">
         <h2>Total Income</h2>
-        <p>$ {totalIncome}</p>
+        <p>$ {totalIncomes}</p>
         <Button text={'Add Income'} blue={true} onClick={showIncomeModal} />
       </Card>
 
@@ -35,9 +35,9 @@ const CardComponent = ({
 };
 
 CardComponent.propTypes = {
-  totalBalance: PropTypes.string,
-  totalIncome: PropTypes.string,
-  totalExpenses: PropTypes.string,
+  currentBalance: PropTypes.number,
+  totalIncomes: PropTypes.number,
+  totalExpenses: PropTypes.number,
   showExpenseModa: PropTypes.func,
   showIncomeModal: PropTypes.func,
 };

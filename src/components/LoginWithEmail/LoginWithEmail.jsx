@@ -15,7 +15,7 @@ const LoginWithEmail = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const loginUsingEmail = async (e) => {
+  const loginUsingEmail = (e) => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -27,12 +27,7 @@ const LoginWithEmail = () => {
       toast.error('Invalid password', {});
     }
 
-    await handleLoginWithEmailAndPassword(
-      email,
-      password,
-      setIsLoading,
-      navigate
-    );
+    handleLoginWithEmailAndPassword(email, password, setIsLoading, navigate);
   };
 
   return (

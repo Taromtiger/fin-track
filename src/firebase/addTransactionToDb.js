@@ -8,7 +8,6 @@ export const addTransactionToDb = async (user, transaction) => {
       collection(db, `users/${user.uid}/transactions`),
       transaction
     );
-
     toast.success('Transactions added');
   } catch (error) {
     toast.error('Error adding document');

@@ -9,6 +9,7 @@ import moment from 'moment';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
 import { addTransactionToDb } from '../../firebase/addTransactionToDb';
+import { v4 as uuidv4 } from 'uuid';
 
 const AddExpenseModal = ({ visible, title, cancelHandler }) => {
   const {
@@ -21,19 +22,20 @@ const AddExpenseModal = ({ visible, title, cancelHandler }) => {
   const [user] = useAuthState(auth);
 
   const onSubmit = (data) => {
-    console.log(data);
-    const newTrasaction = {
-      expenseName: data.expenseName,
-      expenseAmount: data.expenseAmount,
-      expenseDate: moment(data.dateInput).format('L'),
-      expenseTag: data.expenseTag,
+    const newTransaction = {
+      type: 'expense',
+      name: data.name,
+      amount: data.amount,
+      date: moment(data.dateInput).format('L'),
+      tag: data.tag,
+      id: uuidv4(),
     };
 
     toast.success('Expense successfully added');
     reset();
     cancelHandler();
 
-    addTransactionToDb(user, newTrasaction);
+    addTransactionToDb(user, newTransaction);
   };
 
   return (
@@ -45,12 +47,12 @@ const AddExpenseModal = ({ visible, title, cancelHandler }) => {
       className="modal-window"
     >
       <form onSubmit={handleSubmit(onSubmit)} className="form">
-        <label htmlFor="expenseName" className="modal-input-label">
+        <label htmlFor="name" className="modal-input-label">
           <span>*</span> Expense Name
         </label>
         <input
-          id="expenseName"
-          {...register('expenseName', {
+          id="name"
+          {...register('name', {
             required: 'Please input name of transaction',
             minLength: {
               value: 3,
@@ -59,20 +61,20 @@ const AddExpenseModal = ({ visible, title, cancelHandler }) => {
           })}
           className="modal-input"
         />
-        <p className="input-error">{errors?.expenseName?.message}</p>
+        <p className="input-error">{errors?.name?.message}</p>
 
-        <label htmlFor="expenseAmount" className="modal-input-label">
+        <label htmlFor="amount" className="modal-input-label">
           <span>*</span> Amount
         </label>
         <input
-          id="expenseAmount"
-          {...register('expenseAmount', {
+          id="amount"
+          {...register('amount', {
             required: 'Please input an amount',
           })}
           className="modal-input"
           type="number"
         />
-        <p className="input-error">{errors?.expenseAmount?.message}</p>
+        <p className="input-error">{errors?.amount?.message}</p>
 
         <label htmlFor="date" className="modal-input-label">
           <span>*</span> Date
@@ -97,12 +99,13 @@ const AddExpenseModal = ({ visible, title, cancelHandler }) => {
         </label>
         <select
           id="tag"
-          {...register('expenseTag', { required: true })}
+          {...register('tag', { required: true })}
           className="modal-select"
         >
-          <option value="salary">Salary</option>
-          <option value="freelance">Freelance</option>
-          <option value="investment">Investment</option>
+          <option value="salary">Food</option>
+          <option value="salary">Drink</option>
+          <option value="freelance">Movie</option>
+          <option value="investment">Medicine</option>
         </select>
 
         <Button
