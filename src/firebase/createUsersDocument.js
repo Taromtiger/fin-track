@@ -8,7 +8,7 @@ const createDoc = (user, setIsLoading, name) => {
   const useRef = doc(db, 'users', user.uid);
   const userData = getDoc(useRef);
 
-  if (!userData.exists()) {
+  if (!userData) {
     try {
       setDoc(doc(db, 'users', user.uid), {
         name: user.displayName ? user.displayName : name,

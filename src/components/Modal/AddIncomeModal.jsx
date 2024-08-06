@@ -26,7 +26,7 @@ const AddIncomeModal = ({ visible, title, cancelHandler }) => {
       type: 'income',
       name: data.name,
       amount: data.amount,
-      date: moment(data.dateInput).format('L'),
+      date: moment(data.date).format('L'),
       tag: data.tag,
       id: uuidv4(),
     };
@@ -80,7 +80,7 @@ const AddIncomeModal = ({ visible, title, cancelHandler }) => {
         </label>
         <Controller
           control={control}
-          name="dateInput"
+          name="date"
           rules={{ required: 'Please select date' }}
           render={({ field }) => (
             <DatePicker
@@ -92,7 +92,7 @@ const AddIncomeModal = ({ visible, title, cancelHandler }) => {
             />
           )}
         />
-        <p className="input-error">{errors?.dateInput?.message}</p>
+        <p className="input-error">{errors?.date?.message}</p>
         <label htmlFor="tag" className="modal-input-label">
           <span>*</span> Tag
         </label>

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
+import userImg from '../../assets/user.svg';
 
 import './styles.css';
 const Header = () => {
@@ -35,7 +36,11 @@ const Header = () => {
       <p className="logo">Financial Tracker.</p>
       {user && (
         <button className="logo logout-btn" onClick={logoutHandler}>
-          <img src={user.photoURL} alt="user logo" className="user-logo" />{' '}
+          <img
+            src={user.photoURL === null ? userImg : user.photoURL}
+            alt="user logo"
+            className="user-logo"
+          />{' '}
           Logout
         </button>
       )}
