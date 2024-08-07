@@ -31,8 +31,6 @@ const AddExpenseModal = ({ visible, title, cancelHandler }) => {
       id: uuidv4(),
     };
 
-    console.log(newTransaction);
-
     toast.success('Expense successfully added');
     reset();
     cancelHandler();
@@ -104,10 +102,10 @@ const AddExpenseModal = ({ visible, title, cancelHandler }) => {
           {...register('tag', { required: true })}
           className="modal-select"
         >
-          <option value="salary">Food</option>
-          <option value="salary">Drink</option>
-          <option value="freelance">Movie</option>
-          <option value="investment">Medicine</option>
+          <option value="food">Food</option>
+          <option value="drink">Drink</option>
+          <option value="movie">Movie</option>
+          <option value="medicine">Medicine</option>
         </select>
 
         <Button

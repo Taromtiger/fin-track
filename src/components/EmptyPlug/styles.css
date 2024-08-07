@@ -1,0 +1,19 @@
+.plug-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
+
+.plug-img {
+  max-width: 400px;
+  width: 100%;
+  margin: 4rem;
+}
+
+.plug-text {
+  text-align: center;
+  font-size: 1.2rem;
+}

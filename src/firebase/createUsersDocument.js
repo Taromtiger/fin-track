@@ -2,13 +2,13 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { toast } from 'react-toastify';
 
-const createDoc = (user, setIsLoading, name) => {
+const createDoc = async (user, setIsLoading, name) => {
   if (!user) return;
 
   const useRef = doc(db, 'users', user.uid);
-  const userData = getDoc(useRef);
+  const userData = await getDoc(useRef);
 
-  if (!userData) {
+  if (!userData.exists()) {
     try {
       setDoc(doc(db, 'users', user.uid), {
         name: user.displayName ? user.displayName : name,

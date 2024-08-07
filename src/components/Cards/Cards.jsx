@@ -10,13 +10,14 @@ const CardComponent = ({
   totalExpenses,
   showIncomeModal,
   showExpenseModa,
+  resetBalance,
 }) => {
   return (
     <div className="card-container">
       <Card className="card">
         <h2>Current Ballance</h2>
         <p>$ {currentBalance}</p>
-        <Button text={'Reset Ballance'} blue={true} />
+        <Button text={'Reset Ballance'} blue={true} onClick={resetBalance} />
       </Card>
 
       <Card className="card">
@@ -40,6 +41,7 @@ CardComponent.propTypes = {
   totalExpenses: PropTypes.number,
   showExpenseModa: PropTypes.func,
   showIncomeModal: PropTypes.func,
+  resetBalance: PropTypes.func,
 };
 
 export default CardComponent;

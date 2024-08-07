@@ -10,6 +10,10 @@ import { auth, db } from '../firebase.js';
 import { collection, onSnapshot, query } from 'firebase/firestore';
 import Spinner from '../components/Spinner/Spinner.jsx';
 import TransactionsTable from '../components/TransactionsTable/TransactionsTable.jsx';
+import LineChart from '../components/ChartComponent/LineChart.jsx';
+import EmptyPlug from '../components/EmptyPlug/EmptyPlug.jsx';
+import { PieChart } from '../components/ChartComponent/PieChart.jsx';
+import { deleteAllDocs } from '../firebase/deleteAllDocs.js';
 const DashBoard = () => {
   const [isIncomeModalVisible, setIsIncomeModalVisible] = useState(false);
   const [isExpenseModalVisible, setIsExpenseModalVisible] = useState(false);
@@ -36,13 +40,24 @@ const DashBoard = () => {
     setIsIncomeModalVisible(false);
   };
 
+  const handleResetBalance = () => {
+    deleteAllDocs(user);
+  };
+
   useEffect(() => {
     if (user) {
       const q = query(collection(db, `/users/${user.uid}/transactions`));
       const unsubscribe = onSnapshot(q, (snapshot) => {
         snapshot.docChanges().forEach((change) => {
+          console.log(change.type);
           if (change.type === 'added') {
             getAllDocsFromDb(user, setTransactions);
+          }
+          if (change.type === 'removed') {
+            getAllDocsFromDb(user, setTransactions);
+            setCurrentBalance(0);
+            setTotalIncomes(0);
+            setTotalExpenses(0);
           }
         });
       });
@@ -50,7 +65,7 @@ const DashBoard = () => {
       setIsLoading(false);
       return () => unsubscribe();
     }
-  }, [user, setIsLoading]);
+  }, [user]);
 
   useEffect(() => {
     const calculateBalance = () => {
@@ -93,6 +108,7 @@ const DashBoard = () => {
               currentBalance={currentBalance}
               totalIncomes={totalIncomes}
               totalExpenses={totalExpenses}
+              resetBalance={handleResetBalance}
             />
             <AddIncomeModal
               visible={isIncomeModalVisible}
@@ -110,6 +126,14 @@ const DashBoard = () => {
             >
               Expense
             </AddExpenseModal>
+            {transactions.length === 0 ? (
+              <EmptyPlug />
+            ) : (
+              <div className="chart-box">
+                <LineChart transactions={transactions} />
+                <PieChart transactions={transactions} />
+              </div>
+            )}
             <TransactionsTable transactions={transactions} />
           </>
         )}

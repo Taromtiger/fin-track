@@ -26,12 +26,17 @@ export const handleImportCsv = (event, user) => {
   try {
     parse(event.target.files[0], {
       header: true,
+      skipEmptyLines: true,
       complete: async function (results) {
-        console.log(results.data.length <= 1);
-        if (results.data.length <= 1) {
-          toast.error('File is Empty');
+        const validTransactions = results.data.filter((transaction) =>
+          Object.values(transaction).some((value) => value)
+        );
+
+        if (validTransactions.length === 0) {
+          toast.error('File is empty');
+          return;
         } else {
-          for (const transaction of results.data) {
+          for (const transaction of validTransactions) {
             await addTransactionToDb(user, transaction);
           }
         }

@@ -41,3 +41,9 @@ button {
 .spinner p {
   color: var(--theme);
 }
+
+.chart-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
