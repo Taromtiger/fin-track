@@ -49,7 +49,6 @@ const DashBoard = () => {
       const q = query(collection(db, `/users/${user.uid}/transactions`));
       const unsubscribe = onSnapshot(q, (snapshot) => {
         snapshot.docChanges().forEach((change) => {
-          console.log(change.type);
           if (change.type === 'added') {
             getAllDocsFromDb(user, setTransactions);
           }

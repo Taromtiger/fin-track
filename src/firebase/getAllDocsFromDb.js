@@ -7,6 +7,7 @@ export const getAllDocsFromDb = async (user, setTransactions) => {
 
     try {
       const querySnapshot = await getDocs(q);
+
       let transactionsArr = [];
       querySnapshot.forEach((doc) => {
         transactionsArr.push(doc.data());
