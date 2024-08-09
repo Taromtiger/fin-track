@@ -10,16 +10,34 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
 import { addTransactionToDb } from '../../firebase/addTransactionToDb';
 import { v4 as uuidv4 } from 'uuid';
+import { useEffect } from 'react';
+import { editDocument } from '../../firebase/editDocument';
 
-const AddExpenseModal = ({ visible, title, cancelHandler }) => {
+const AddExpenseModal = ({
+  visible,
+  title,
+  cancelHandler,
+  isEditing,
+  transaction,
+}) => {
   const {
     control,
     register,
     handleSubmit,
+    setValue,
     reset,
     formState: { errors },
   } = useForm();
   const [user] = useAuthState(auth);
+
+  useEffect(() => {
+    if (transaction) {
+      setValue('name', transaction.name);
+      setValue('amount', transaction.amount);
+      setValue('date', moment(transaction.date, 'L').toDate());
+      setValue('tag', transaction.tag);
+    }
+  }, [transaction, setValue]);
 
   const onSubmit = (data) => {
     const newTransaction = {
@@ -28,14 +46,19 @@ const AddExpenseModal = ({ visible, title, cancelHandler }) => {
       amount: data.amount,
       date: moment(data.date).format('L'),
       tag: data.tag,
-      id: uuidv4(),
+      id: transaction ? transaction.id : uuidv4(),
     };
 
-    toast.success('Expense successfully added');
+    if (isEditing && transaction) {
+      editDocument(user, transaction.id, newTransaction);
+      toast.success('Expense successfully updated');
+    } else {
+      addTransactionToDb(user, newTransaction);
+      toast.success('Expense successfully added');
+    }
+
     reset();
     cancelHandler();
-
-    addTransactionToDb(user, newTransaction);
   };
 
   return (
@@ -106,13 +129,13 @@ const AddExpenseModal = ({ visible, title, cancelHandler }) => {
           <option value="drink">Drink</option>
           <option value="movie">Movie</option>
           <option value="medicine">Medicine</option>
+          <option value="medicine">Other</option>
         </select>
 
         <Button
           type="submit"
-          text={'Add Income'}
+          text={isEditing ? 'Edit Expense' : 'Add Expense'}
           blue={true}
-          className="modal-btn"
         />
       </form>
     </Modal>
@@ -123,6 +146,8 @@ AddExpenseModal.propTypes = {
   visible: PropTypes.bool,
   title: PropTypes.string,
   cancelHandler: PropTypes.func,
+  isEditing: PropTypes.bool,
+  transaction: PropTypes.object,
 };
 
 export default AddExpenseModal;

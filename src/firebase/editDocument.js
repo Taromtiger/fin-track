@@ -1,7 +1,7 @@
-import { deleteDoc, getDocs, collection } from 'firebase/firestore';
+import { collection, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 
-export const deleteDocfromDb = async (user, id) => {
+export const editDocument = async (user, id, updatedTransaction) => {
   try {
     const transactionsCollection = collection(
       db,
@@ -12,12 +12,7 @@ export const deleteDocfromDb = async (user, id) => {
     querySnapshot.forEach((doc) => {
       if (doc.data().id === id) {
         const docRef = doc.ref;
-
-        deleteDoc(docRef)
-          .then(() =>
-            console.log(`Document with ID ${id} deleted successfully.`)
-          )
-          .catch((error) => console.error('Error deleting document:', error));
+        updateDoc(docRef, updatedTransaction);
       }
     });
   } catch (error) {

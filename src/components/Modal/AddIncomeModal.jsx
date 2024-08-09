@@ -10,16 +10,34 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
+import { useEffect } from 'react';
+import { editDocument } from '../../firebase/editDocument';
 
-const AddIncomeModal = ({ visible, title, cancelHandler }) => {
+const AddIncomeModal = ({
+  visible,
+  title,
+  cancelHandler,
+  isEditing,
+  transaction,
+}) => {
   const {
     control,
     register,
     handleSubmit,
+    setValue,
     reset,
     formState: { errors },
   } = useForm();
   const [user] = useAuthState(auth);
+
+  useEffect(() => {
+    if (transaction) {
+      setValue('name', transaction.name);
+      setValue('amount', transaction.amount);
+      setValue('date', moment(transaction.date, 'L').toDate());
+      setValue('tag', transaction.tag);
+    }
+  }, [transaction, setValue]);
 
   const onSubmit = (data) => {
     const newTransaction = {
@@ -28,13 +46,19 @@ const AddIncomeModal = ({ visible, title, cancelHandler }) => {
       amount: data.amount,
       date: moment(data.date).format('L'),
       tag: data.tag,
-      id: uuidv4(),
+      id: transaction ? transaction.id : uuidv4(),
     };
-    toast.success('Income successfully added');
+
+    if (isEditing && transaction) {
+      editDocument(user, transaction.id, newTransaction);
+      toast.success('Income successfully updated');
+    } else {
+      addTransactionToDb(user, newTransaction);
+      toast.success('Income successfully added');
+    }
+
     reset();
     cancelHandler();
-
-    addTransactionToDb(user, newTransaction);
   };
 
   return (
@@ -104,9 +128,14 @@ const AddIncomeModal = ({ visible, title, cancelHandler }) => {
           <option value="salary">Salary</option>
           <option value="freelance">Freelance</option>
           <option value="investment">Investment</option>
+          <option value="investment">Other</option>
         </select>
 
-        <Button type="submit" text={'Add Income'} blue={true} />
+        <Button
+          type="submit"
+          text={isEditing ? 'Edit Income' : 'Add Income'}
+          blue={true}
+        />
       </form>
     </Modal>
   );
@@ -116,6 +145,8 @@ AddIncomeModal.propTypes = {
   visible: PropTypes.bool,
   title: PropTypes.string,
   cancelHandler: PropTypes.func,
+  isEditing: PropTypes.bool,
+  transaction: PropTypes.object,
 };
 
 export default AddIncomeModal;

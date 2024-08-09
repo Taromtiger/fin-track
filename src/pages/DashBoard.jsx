@@ -23,21 +23,27 @@ const DashBoard = () => {
   const [currentBalance, setCurrentBalance] = useState(0);
   const [totalIncomes, setTotalIncomes] = useState(0);
   const [totalExpenses, setTotalExpenses] = useState(0);
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentTransaction, setCurrentTransaction] = useState(null);
 
   const showIncomeModal = () => {
     setIsIncomeModalVisible(true);
+    setIsEditing(false);
+    setCurrentTransaction(null);
   };
 
   const showExpenseModal = () => {
     setIsExpenseModalVisible(true);
-  };
-
-  const handleExpenseCancel = () => {
-    setIsExpenseModalVisible(false);
+    setIsEditing(false);
+    setCurrentTransaction(null);
   };
 
   const handleIncomeCancel = () => {
     setIsIncomeModalVisible(false);
+  };
+
+  const handleExpenseCancel = () => {
+    setIsExpenseModalVisible(false);
   };
 
   const handleResetBalance = () => {
@@ -49,10 +55,11 @@ const DashBoard = () => {
       const q = query(collection(db, `/users/${user.uid}/transactions`));
       const unsubscribe = onSnapshot(q, (snapshot) => {
         snapshot.docChanges().forEach((change) => {
-          if (change.type === 'added') {
-            getAllDocsFromDb(user, setTransactions);
-          }
-          if (change.type === 'removed') {
+          if (
+            change.type === 'added' ||
+            change.type === 'removed' ||
+            change.type === 'modified'
+          ) {
             getAllDocsFromDb(user, setTransactions);
             setCurrentBalance(0);
             setTotalIncomes(0);
@@ -111,17 +118,21 @@ const DashBoard = () => {
             />
             <AddIncomeModal
               visible={isIncomeModalVisible}
-              title={'Add Income'}
+              title={isEditing ? 'Edit Income' : 'Add Income'}
               cancelHandler={handleIncomeCancel}
               footer={null}
+              transaction={currentTransaction}
+              isEditing={isEditing}
             >
               Income
             </AddIncomeModal>
             <AddExpenseModal
               visible={isExpenseModalVisible}
-              title={'Add Expense'}
+              title={isEditing ? 'Edit Expense' : 'Add Expense'}
               cancelHandler={handleExpenseCancel}
               footer={null}
+              transaction={currentTransaction}
+              isEditing={isEditing}
             >
               Expense
             </AddExpenseModal>
@@ -133,7 +144,13 @@ const DashBoard = () => {
                 <PieChart transactions={transactions} />
               </div>
             )}
-            <TransactionsTable transactions={transactions} />
+            <TransactionsTable
+              transactions={transactions}
+              setIsIncomeModalVisible={setIsIncomeModalVisible}
+              setIsExpenseModalVisible={setIsExpenseModalVisible}
+              setCurrentTransaction={setCurrentTransaction}
+              setIsEditing={setIsEditing}
+            />
           </>
         )}
       </div>

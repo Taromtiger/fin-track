@@ -5,7 +5,13 @@ import TableComponent from '../TableComponent/TableComponent';
 
 import './styles.css';
 
-const TransactionsTable = ({ transactions }) => {
+const TransactionsTable = ({
+  transactions,
+  setIsIncomeModalVisible,
+  setIsExpenseModalVisible,
+  setCurrentTransaction,
+  setIsEditing,
+}) => {
   const [search, setSearch] = useState('');
   const [typeValue, setTypeValue] = useState('');
   const [sortValue, setSortValue] = useState('');
@@ -50,19 +56,21 @@ const TransactionsTable = ({ transactions }) => {
         search={search}
         typeValue={typeValue}
         sortValue={sortValue}
+        setIsIncomeModalVisible={setIsIncomeModalVisible}
+        setIsExpenseModalVisible={setIsExpenseModalVisible}
+        setCurrentTransaction={setCurrentTransaction}
+        setIsEditing={setIsEditing}
       />
-      {/* <Table
-        dataSource={sortedTransactions}
-        columns={columns}
-        rowKey="id"
-        title={CustomTableTitle}
-      /> */}
     </>
   );
 };
 
 TransactionsTable.propTypes = {
   transactions: PropTypes.array,
+  setCurrentTransaction: PropTypes.func,
+  setIsEditing: PropTypes.func,
+  setIsIncomeModalVisible: PropTypes.func,
+  setIsExpenseModalVisible: PropTypes.func,
 };
 
 export default TransactionsTable;

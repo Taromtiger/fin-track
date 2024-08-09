@@ -5,7 +5,16 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
 import { deleteDocfromDb } from '../../firebase/deleteDocfromDb';
 
-const TableComponent = ({ transactions, search, typeValue, sortValue }) => {
+const TableComponent = ({
+  transactions,
+  search,
+  typeValue,
+  sortValue,
+  setIsIncomeModalVisible,
+  setIsExpenseModalVisible,
+  setCurrentTransaction,
+  setIsEditing,
+}) => {
   const [user] = useAuthState(auth);
 
   const columns = [
@@ -40,7 +49,21 @@ const TableComponent = ({ transactions, search, typeValue, sortValue }) => {
       render: (text, record) => (
         <div style={{ width: '100px' }}>
           <Space size="large">
-            <Button type="primary">Edit</Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                if (record.type === 'income') {
+                  setIsIncomeModalVisible(true);
+                } else if (record.type === 'expense') {
+                  setIsExpenseModalVisible(true);
+                }
+
+                setCurrentTransaction(record);
+                setIsEditing(true);
+              }}
+            >
+              Edit
+            </Button>
             <Button
               type="danger"
               onClick={() => deleteDocfromDb(user, record.id)}
@@ -112,6 +135,10 @@ TableComponent.propTypes = {
   search: PropTypes.string,
   typeValue: PropTypes.string,
   sortValue: PropTypes.string,
+  setCurrentTransaction: PropTypes.func,
+  setIsEditing: PropTypes.func,
+  setIsIncomeModalVisible: PropTypes.func,
+  setIsExpenseModalVisible: PropTypes.func,
 };
 
 export default TableComponent;

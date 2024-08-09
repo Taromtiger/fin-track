@@ -5,9 +5,18 @@ export const deleteAllDocs = async (user) => {
   const collectionRef = collection(db, `users/${user.uid}/transactions`);
   const querySnapshot = await getDocs(collectionRef);
 
+  console.log(querySnapshot.docs.length);
+
   const batch = writeBatch(db);
+  if (querySnapshot.docs.length === 0) {
+    alert(
+      'Your balance is currently 0. To change your balance, add income and expenses.'
+    );
+    return;
+  }
+
   alert(
-    'Are tou realy want to reset your ballance? It will delete all you incomes and expenses records!'
+    'Are you really want to reset your balance? It will delete all you incomes and expenses records!'
   );
   querySnapshot.forEach((doc) => {
     batch.delete(doc.ref);
