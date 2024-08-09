@@ -27,17 +27,28 @@ const AddIncomeModal = ({
     setValue,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      name: '',
+      amount: '',
+      date: new Date(),
+      tag: '',
+    },
+  });
   const [user] = useAuthState(auth);
 
   useEffect(() => {
-    if (transaction) {
-      setValue('name', transaction.name);
-      setValue('amount', transaction.amount);
-      setValue('date', moment(transaction.date, 'L').toDate());
-      setValue('tag', transaction.tag);
+    if (visible) {
+      if (transaction) {
+        setValue('name', transaction.name);
+        setValue('amount', transaction.amount);
+        setValue('date', moment(transaction.date, 'L').toDate());
+        setValue('tag', transaction.tag);
+      } else {
+        reset();
+      }
     }
-  }, [transaction, setValue]);
+  }, [visible, reset, transaction, setValue]);
 
   const onSubmit = (data) => {
     const newTransaction = {
@@ -61,11 +72,16 @@ const AddIncomeModal = ({
     cancelHandler();
   };
 
+  const handleCancel = () => {
+    reset();
+    cancelHandler();
+  };
+
   return (
     <Modal
       open={visible}
       title={title}
-      onCancel={cancelHandler}
+      onCancel={handleCancel}
       footer={null}
       className="modal-window"
     >
